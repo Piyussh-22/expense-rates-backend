@@ -1,5 +1,7 @@
 # Save Rupee — Backend API
 
+APP :- https://save-rupeee.vercel.app
+
 REST API server for Save Rupee, a personal finance tracker PWA. Built with Node.js, Express, and PostgreSQL.
 
 ## Tech Stack
@@ -180,11 +182,11 @@ GOOGLE_CALLBACK_URL=http://localhost:5000/auth/google/callback
 
 ## Deployment
 
-This API is deployed on [Render](https://render.com).
+This API is deployed on (https://save-rupeee-backend.onrender.com).
 
 A cron job pings `/health` every 14 minutes to keep the free-tier instance active.
 
-**Live API:** _coming soon_
+**Live API:** (https://save-rupeee.vercel.app)
 
 ## Security
 
