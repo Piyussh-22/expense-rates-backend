@@ -1,18 +1,38 @@
 {
-  "name": "rates-backend",
+  "name": "save-rupee-backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "type": "module",
+  "main": "src/app.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Piyush Raj",
   "license": "ISC",
-  "description": "",
   "dependencies": {
-    "cors": "^2.8.5",
-    "dotenv": "^16.5.0",
-    "express": "^5.1.0",
-    "node-fetch": "^2.7.0"
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "dotenv": "^16.6.1",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.3.0",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.3",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
+    "pdfkit": "^0.17.2",
+    "pg": "^8.20.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Piyussh-22/save-rupeee-backend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Piyussh-22/save-rupeee-backend/issues"
+  },
+  "homepage": "https://github.com/Piyussh-22/save-rupeee-backend#readme",
+  "description": "REST API for Save Rupeee personal finance tracker",
+  "devDependencies": {
+    "nodemon": "^3.1.14"
   }
 }
