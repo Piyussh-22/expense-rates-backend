@@ -1,4 +1,5 @@
 import express from "express";
+import rateLimit from "express-rate-limit";
 import passport from "../config/passport.config.js";
 import authMiddleware from "../middleware/auth.middleware.js";
 import {
@@ -9,6 +10,9 @@ import {
 import pool from "../config/db.config.js";
 
 const router = express.Router();
+
+// Strict rate limit for recovery — unauthenticated endpoint that hits DB
+const recoveryLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 10 });
 
 router.get(
   "/google",
@@ -53,8 +57,8 @@ router.get(
 router.get("/me", authMiddleware, getMe);
 router.post("/logout", authMiddleware, logout);
 
-// Account recovery
-router.post("/recover", async (req, res) => {
+// Account recovery — rate limited tightly, no auth required
+router.post("/recover", recoveryLimiter, async (req, res) => {
   const { email } = req.body;
 
   if (!email) return res.status(400).json({ error: "Email required." });

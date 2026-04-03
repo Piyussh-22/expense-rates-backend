@@ -11,9 +11,12 @@ const authMiddleware = async (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // Check if user has been soft-deleted since token was issued
+    // Fetch fresh user data from DB on every request
+    // This ensures stale JWT data never reaches controllers
+    // and catches soft-deleted accounts in the same query
     const result = await pool.query(
-      "SELECT is_deleted FROM users WHERE id = $1",
+      `SELECT id, email, name, avatar_url, default_currency, currency_set, is_deleted
+       FROM users WHERE id = $1`,
       [decoded.id],
     );
 
@@ -21,7 +24,7 @@ const authMiddleware = async (req, res, next) => {
       return res.status(401).json({ error: "Account not found or deleted." });
     }
 
-    req.user = decoded;
+    req.user = result.rows[0];
     next();
   } catch (err) {
     if (err.name === "TokenExpiredError") {

@@ -22,14 +22,18 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(passport.initialize());
 
-app.use("/auth", rateLimit({ windowMs: 15 * 60 * 1000, max: 300 }));
+// Auth routes - stricter limit to prevent brute force
+app.use("/auth", rateLimit({ windowMs: 15 * 60 * 1000, max: 50 }));
 app.use("/auth", authRoutes);
 
 app.get("/health", (req, res) => res.json({ status: "ok" }));
-app.use("/api/transactions", transactionRoutes);
-app.use("/api/summary", summaryRoutes);
-app.use("/api/users/me", userRoutes);
-app.use("/api/export", exportRoutes);
+
+// API routes - general limit to protect DB from hammering
+const apiLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 200 });
+app.use("/api/transactions", apiLimiter, transactionRoutes);
+app.use("/api/summary", apiLimiter, summaryRoutes);
+app.use("/api/users/me", apiLimiter, userRoutes);
+app.use("/api/export", apiLimiter, exportRoutes);
 
 app.use((req, res) => res.status(404).json({ error: "Route not found." }));
 app.use((err, req, res, next) => {
